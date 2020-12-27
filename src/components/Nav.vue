@@ -7,8 +7,13 @@
     <router-link to="/statistics">统计</router-link>
   </div>
 </template>
-
 <script lang="ts">
+
+import x from '@assets/icons/Label.svg';
+
+console.log(x);
+
+
 export default {
   name: 'Nav'
 };
