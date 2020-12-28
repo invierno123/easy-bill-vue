@@ -54,10 +54,8 @@
 </script>
 
 <style lang="scss" scoped>
-@import 'src/assets/style/helper.scss';
+@import '~@/assets/style/helper.scss';
 
-p {
-  color: $red;
-}
+
 
 </style>
