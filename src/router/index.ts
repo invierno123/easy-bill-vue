@@ -1,8 +1,12 @@
+/* eslint-disable */
 import Vue from 'vue';
 import VueRouter, {RouteConfig} from 'vue-router';
-import Money from '@/views/Money.vue';
-import Labels from '@/views/Labels.vue';
-import Statistics from '@/views/Statistics.vue';
+// @ts-ignore
+import Money from '@/views/Money';
+// @ts-ignore
+import Labels from '@/views/Labels';
+// @ts-ignore
+import Statistics from '@/views/Statistics';
 import NotFound from '@/views/NotFound.vue';
 
 Vue.use(VueRouter);
