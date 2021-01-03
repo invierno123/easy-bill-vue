@@ -1,54 +1,81 @@
 <template>
-    <ul class="types">
-      <li :class="type==='-' && 'selected'" @click="selectType('-')">支出</li>
-      <li :class="type==='+' && 'selected'" @click="selectType('+')">收入</li>
-    </ul>
+  <ul class="types">
+    <li :class="type==='-' && 'selected'" @click="selectType('-')">支出</li>
+    <li :class="type==='+' && 'selected'" @click="selectType('+')">收入</li>
+  </ul>
 </template>
 
-<script>
-export default {
-  name: 'Types',
-  props:['xxx'],
-  data(){
-    return{
-      type:'-'//‘-’表示支出，‘+’表示收入
-    }
-  },
-  mounted(){
-    console.log(this.xxx)
-  },
-  methods:{
-    selectType(type){
-      if(type!=='-' && type!=='+'){
-        throw new Error('type is unknown')
-      }
-      this.type=type
-    }
+<script lang="ts">
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+const GreetingProps = Vue.extend({
+  props: {
+    name: String
   }
-};
+});
+
+@Component
+export default class Types extends Vue {
+  type = '-';//‘-’表示支出，‘+’表示收入,这里的‘=’不能用‘：’代替
+  selectType(type: string) {
+    if (type !== '-' && type !== '+') {
+      throw new Error('type is unknown');
+    }
+    this.type = type;
+  }
+
+  get message(): string {
+    // this.name will be typed
+    return 'Hello, ' + this.name;
+  }
+}
+
+// export default {
+//   name: 'Types',
+//   props:['xxx'],
+//   data(){
+//     return{
+//       type:'-'//‘-’表示支出，‘+’表示收入
+//     }
+//   },
+//   mounted(){
+//     console.log(this.xxx)
+//   },
+//   methods:{
+//     selectType(type){
+//       if(type!=='-' && type!=='+'){
+//         throw new Error('type is unknown')
+//       }
+//       this.type=type
+//     }
+//   }
+// };
 </script>
 
 <style lang="scss" scoped>
-.types{
+.types {
   background: #c4c4c4;
   display: flex;
   text-align: center;
-  font-size:24px ;
-  > li{
+  font-size: 24px;
+
+  > li {
     width: 50%;
     display: flex;
     height: 64px;
     justify-content: center;
     align-items: center;
     position: relative;
-    &.selected{
-      &::after{
+
+    &.selected {
+      &::after {
         content: '';
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
-        height:4px ;
+        height: 4px;
         background: #333;
 
       }
