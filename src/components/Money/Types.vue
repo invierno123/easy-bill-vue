@@ -9,11 +9,7 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 
-const GreetingProps = Vue.extend({
-  props: {
-    name: String
-  }
-});
+
 
 @Component
 export default class Types extends Vue {
@@ -25,32 +21,8 @@ export default class Types extends Vue {
     this.type = type;
   }
 
-  get message(): string {
-    // this.name will be typed
-    return 'Hello, ' + this.name;
-  }
 }
 
-// export default {
-//   name: 'Types',
-//   props:['xxx'],
-//   data(){
-//     return{
-//       type:'-'//‘-’表示支出，‘+’表示收入
-//     }
-//   },
-//   mounted(){
-//     console.log(this.xxx)
-//   },
-//   methods:{
-//     selectType(type){
-//       if(type!=='-' && type!=='+'){
-//         throw new Error('type is unknown')
-//       }
-//       this.type=type
-//     }
-//   }
-// };
 </script>
 
 <style lang="scss" scoped>
