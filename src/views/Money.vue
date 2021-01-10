@@ -15,18 +15,19 @@ import Notes from '@/components/Money/Notes.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component, Watch} from 'vue-property-decorator';
-import {recordListModel} from '@/models/recordListModel';
+import recordListModel from '@/models/recordListModel';
 import {tagListModel} from '@/models/tagListModel';
 
 
 const recordList = recordListModel.fetch();
-const tagList=tagListModel.fetch()
+const tagList = tagListModel.fetch();
 
 @Component({
   components: {Tags, Notes, Types, NumberPad}
 })
 export default class Money extends Vue {
   tags = tagList;
+  recordList: RecordItem[]=recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
 
@@ -39,14 +40,14 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    const newRecord: RecordItem = recordList.clone(this.record); //深拷贝,先变成字符串再重新创造一个对象
+    const newRecord: RecordItem = recordListModel.clone(this.record); //深拷贝,先变成字符串再重新创造一个对象
     newRecord.createdTime = new Date();
     this.recordList.push(newRecord);
   }
 
   @Watch('recordList')
   onRecordListChange() {
-    recordList.save(recordList);
+    recordListModel.save(this.recordList);//这里要记得调用save函数啊
   }
 }
 </script>

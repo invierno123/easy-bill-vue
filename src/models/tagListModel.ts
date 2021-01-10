@@ -20,7 +20,7 @@ const tagListModel: TagListModel = {
     return 'success';
   },
   save() {
-    window.localStorage.setItem('recordList', JSON.stringify(this.data));
+    window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
   }
 };
 
