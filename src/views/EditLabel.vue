@@ -6,7 +6,7 @@
       <span class="rightIcon"></span>
     </div>
     <div class="Edit-Wrapper">
-      <EditItem field-name="标签名" placeholder="请输入标签名"/>
+      <EditItem :value="tag.name" field-name="标签名" placeholder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
       <Button>删除标签</Button>
@@ -20,18 +20,21 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import {tagListModel} from '@/models/tagListModel';
 import EditItem from '@/components/Money/EditItem.vue';
+
 @Component({
   components: {EditItem}
 })
 export default class EditLabel extends Vue {
+  tag?: { id: string ;name: string } = undefined;
+
   created() {//注意这里的created函数并不是自定义的,是钩子函数
     const id = this.$route.params.id;
     tagListModel.fetch();
-    const tags=tagListModel.data;
-    const tag=tags.filter(t=>t.id===id)[0];
-    if(tag){
-      console.log(tag);
-    }else{
+    const tags = tagListModel.data;
+    const tag = tags.filter(t => t.id === id)[0];
+    if (tag) {
+      this.tag=tag;
+    } else {
       this.$router.replace('/404');//为了路径返回用replace而不用push
     }
   }
@@ -40,7 +43,7 @@ export default class EditLabel extends Vue {
 
 <style lang="scss" scoped>
 
-.navBar{
+.navBar {
   text-align: center;
   font-size: 16px;
   padding: 12px 16px;
@@ -49,23 +52,28 @@ export default class EditLabel extends Vue {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  > .title{
+
+  > .title {
 
   }
-  > .leftIcon{
+
+  > .leftIcon {
     width: 24px;
     height: 24px;
   }
-  > .rightIcon{
+
+  > .rightIcon {
     width: 24px;
     height: 24px;
   }
 }
-.Edit-Wrapper{
+
+.Edit-Wrapper {
   background: white;
   margin-top: 8px;
 }
-.button-wrapper{
+
+.button-wrapper {
   text-align: center;
   padding: 16px;
   margin-top: 44-16px;

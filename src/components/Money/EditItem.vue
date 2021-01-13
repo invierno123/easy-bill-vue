@@ -16,7 +16,7 @@ import {Component, Prop, Watch} from 'vue-property-decorator';
 
 @Component
 export default class EditItem extends Vue {
-  @Prop({default: ''}) value!: string;
+  @Prop({default: ''}) readonly value!: string;
   @Prop({required: true}) fieldName!: string;
   @Prop() placeholder?: string;
 
