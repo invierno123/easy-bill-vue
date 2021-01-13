@@ -1,9 +1,17 @@
 <template>
   <Layout>
-    <div>
-      <Icon name="left"/>
+    <div class="navBar">
+      <Icon class="leftIcon" name="left"/>
+      <span class="title">编辑标签</span>
+      <span class="rightIcon"></span>
     </div>
-    <Notes field-name="标签名" placeholder="请输入标签名"/>
+    <div class="Edit-Wrapper">
+      <EditItem field-name="标签名" placeholder="请输入标签名"/>
+    </div>
+    <div class="button-wrapper">
+      <Button>删除标签</Button>
+    </div>
+
   </Layout>
 </template>
 
@@ -11,9 +19,9 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import {tagListModel} from '@/models/tagListModel';
-import Notes from '@/components/Money/Notes.vue';
+import EditItem from '@/components/Money/EditItem.vue';
 @Component({
-  components: {Notes}
+  components: {EditItem}
 })
 export default class EditLabel extends Vue {
   created() {//注意这里的created函数并不是自定义的,是钩子函数
@@ -32,4 +40,34 @@ export default class EditLabel extends Vue {
 
 <style lang="scss" scoped>
 
+.navBar{
+  text-align: center;
+  font-size: 16px;
+  padding: 12px 16px;
+  background: white;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > .title{
+
+  }
+  > .leftIcon{
+    width: 24px;
+    height: 24px;
+  }
+  > .rightIcon{
+    width: 24px;
+    height: 24px;
+  }
+}
+.Edit-Wrapper{
+  background: white;
+  margin-top: 8px;
+}
+.button-wrapper{
+  text-align: center;
+  padding: 16px;
+  margin-top: 44-16px;
+}
 </style>
