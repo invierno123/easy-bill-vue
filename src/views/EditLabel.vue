@@ -1,15 +1,18 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left"/>
+      <Icon class="leftIcon" name="left" @click.native="back"/>
       <span class="title">编辑标签</span>
       <span class="rightIcon"></span>
     </div>
     <div class="Edit-Wrapper">
-      <EditItem :value="tag.name" field-name="标签名" placeholder="请输入标签名"/>
+      <EditItem :value="tag.name"
+                field-name="标签名"
+                @update:value="updateTag"
+                placeholder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button @click="remove">删除标签</Button>
     </div>
 
   </Layout>
@@ -37,6 +40,15 @@ export default class EditLabel extends Vue {
     } else {
       this.$router.replace('/404');//为了路径返回用replace而不用push
     }
+  }
+  updateTag(name: string){
+   tagListModel.update(this.tag.id,name)
+  }
+  remove(){
+    tagListModel.remove(this.tag.id)
+  }
+  back(){
+    this.$router.back()
   }
 }
 </script>
