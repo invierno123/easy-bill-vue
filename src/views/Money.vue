@@ -45,14 +45,12 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    const newRecord: RecordItem = recordListModel.clone(this.record); //深拷贝,先变成字符串再重新创造一个对象
-    newRecord.createdTime = new Date();
-    this.recordList.push(newRecord);
+    recordListModel.create(this.record)
   }
 
   @Watch('recordList')
   onRecordListChange() {
-    recordListModel.save(this.recordList);//这里要记得调用save函数啊
+    recordListModel.save();//这里要记得调用save函数啊
   }
 }
 </script>
