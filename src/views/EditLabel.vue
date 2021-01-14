@@ -28,7 +28,7 @@ import EditItem from '@/components/Money/EditItem.vue';
   components: {EditItem}
 })
 export default class EditLabel extends Vue {
-  tag?: { id: string ;name: string } = undefined;
+  tag?: { id: string; name: string } = undefined;
 
   created() {//注意这里的created函数并不是自定义的,是钩子函数
     const id = this.$route.params.id;
@@ -36,19 +36,24 @@ export default class EditLabel extends Vue {
     const tags = tagListModel.data;
     const tag = tags.filter(t => t.id === id)[0];
     if (tag) {
-      this.tag=tag;
+      this.tag = tag;
     } else {
       this.$router.replace('/404');//为了路径返回用replace而不用push
     }
   }
-  updateTag(name: string){
-   tagListModel.update(this.tag.id,name)
+
+  updateTag(name: string) {
+    tagListModel.update(this.tag.id, name);
   }
-  remove(){
-    tagListModel.remove(this.tag.id)
+
+  remove() {
+    if (tagListModel.remove(this.tag.id)) {
+      this.$router.back();
+    }
   }
-  back(){
-    this.$router.back()
+
+  back() {
+    this.$router.back();
   }
 }
 </script>
