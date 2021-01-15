@@ -1,4 +1,4 @@
-function clone(data: RecordItem) {
+function clone(data: unknown) {
   return JSON.parse(JSON.stringify(data));
 }
 

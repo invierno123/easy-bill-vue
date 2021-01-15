@@ -21,17 +21,17 @@ import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component, Watch} from 'vue-property-decorator';
 import recordListModel from '@/models/recordListModel';
-import {tagListModel} from '@/models/tagListModel';
+
 
 
 const recordList = recordListModel.fetch();
-const tagList = tagListModel.fetch();
+
 
 @Component({
   components: {Tags, EditItem, Types, NumberPad}
 })
 export default class Money extends Vue {
-  tags = tagList;
+  tags = window.tagList;
   recordList: RecordItem[]=recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 

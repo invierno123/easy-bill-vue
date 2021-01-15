@@ -2,7 +2,7 @@
   <Layout>
     <div class="tags">
       <router-link class="tag" v-for="tag in tags" :key="tag.id"
-                   :to="`/labels/edit/${tag.id}`" >
+                   :to="`/labels/edit/${tag.id}`">
         <span>{{ tag.name }}</span>
         <Icon name="right"/>
       </router-link>
@@ -18,19 +18,19 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import {tagListModel} from '@/models/tagListModel';
 
-tagListModel.fetch();
+
 @Component
 export default class Labels extends Vue {
-  tags = tagListModel.data
+  tags = window.tagList;
 
   createTag() {
     const name = window.prompt('请输入标签名');
-    if(name){
+    if (name) {
       const message = tagListModel.create(name);
-      if (message==='duplicate'){
-        window.alert('标签名已存在')
-      }else if (message==='success'){
-        window.alert('添加成功')
+      if (message === 'duplicate') {
+        window.alert('标签名已存在');
+      } else if (message === 'success') {
+        window.alert('添加成功');
       }
 
     }
