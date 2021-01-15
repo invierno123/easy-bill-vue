@@ -20,6 +20,7 @@ import EditItem from '@/components/Money/EditItem.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
+import store from '@/store/newIndex';
 
 
 
@@ -27,8 +28,8 @@ import {Component} from 'vue-property-decorator';
   components: {Tags, EditItem, Types, NumberPad}
 })
 export default class Money extends Vue {
-  tags = window.tagList;
-  recordList = window.recordList;//需要在这里引用出recordList
+  tags = store.tagList;
+  recordList = store.recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
 
@@ -41,7 +42,7 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    window.createRecord(this.record);
+    store.createRecord(this.record);
   }
 
 
