@@ -11,6 +11,7 @@ const recordListModel = {
     const newRecord: RecordItem =clone(record); //深拷贝,先变成字符串再重新创造一个对象
     newRecord.createdTime = new Date();
     this.data.push(newRecord);
+    this.save();
   },
   save() {
     window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));

@@ -21,37 +21,32 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import {tagListModel} from '@/models/tagListModel';
 import EditItem from '@/components/Money/EditItem.vue';
 
 @Component({
   components: {EditItem}
 })
 export default class EditLabel extends Vue {
-  tag?: { id: string; name: string } = undefined;
+  tag= window.findTag(this.$route.params.id);
 
   created() {//注意这里的created函数并不是自定义的,是钩子函数
-    const id = this.$route.params.id;
-    tagListModel.fetch();
-    const tags = tagListModel.data;
-    const tag = tags.filter(t => t.id === id)[0];
-    if (tag) {
-      this.tag = tag;
-    } else {
-      this.$router.replace('/404');//为了路径返回用replace而不用push
+    if(!this.tag){
+      this.$router.replace('/404')
     }
   }
-
   updateTag(name: string) {
     if (this.tag)
-      tagListModel.update(this.tag.id, name);
+   window.updateTag(this.tag.id, name);
   }
 
   remove() {
     if (this.tag) {
-      if (tagListModel.remove(this.tag.id)) {
+      if (window.removeTag(this.tag.id)) {
         this.$router.back();
+      } else {
+        window.alert('删除失败');
       }
+
     }
   }
 

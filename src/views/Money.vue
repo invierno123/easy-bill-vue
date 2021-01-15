@@ -19,12 +19,8 @@ import Types from '@/components/Money/Types.vue';
 import EditItem from '@/components/Money/EditItem.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
-import {Component, Watch} from 'vue-property-decorator';
-import recordListModel from '@/models/recordListModel';
+import {Component} from 'vue-property-decorator';
 
-
-
-const recordList = recordListModel.fetch();
 
 
 @Component({
@@ -32,7 +28,7 @@ const recordList = recordListModel.fetch();
 })
 export default class Money extends Vue {
   tags = window.tagList;
-  recordList: RecordItem[]=recordList;//需要在这里引用出recordList
+  recordList = window.recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
 
@@ -45,13 +41,10 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    recordListModel.create(this.record)
+    window.createRecord(this.record);
   }
 
-  @Watch('recordList')
-  onRecordListChange() {
-    recordListModel.save();//这里要记得调用save函数啊
-  }
+
 }
 </script>
 
@@ -61,7 +54,8 @@ export default class Money extends Vue {
   display: flex;
   flex-direction: column-reverse;
 }
-.notes{
+
+.notes {
   padding: 12px 0;
 }
 </style>
