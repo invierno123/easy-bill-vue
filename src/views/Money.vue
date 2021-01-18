@@ -9,7 +9,7 @@
                 @update:value="updateNotes"/>
     </div>
 
-    <Tags :data-source.sync="tags" @update:value="updateTags"/>
+    <Tags/>
   </Layout>
 </template>
 
@@ -28,14 +28,11 @@ import store from '@/store/newIndex';
   components: {Tags, EditItem, Types, NumberPad}
 })
 export default class Money extends Vue {
-  tags = store.tagList;
+
   recordList = store.recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
 
-  updateTags(value: string[]) {
-    this.record.tags = value;
-  }
 
   updateNotes(value: string) {
     this.record.notes = value;

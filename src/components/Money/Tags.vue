@@ -4,9 +4,9 @@
       <button @click="create">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="tag in dataSource" :key="tag.id"
-          :class="{selected:selectedTag.indexOf(tag)>=0}"
-          @click="toggle(tag)">{{ tag.name }}
+      <li v-for="tag in this.tagList" :key="tag.id"
+          :class="{selected:selectedTag.indexOf(tag.toString())>=0}"
+          @click="toggle(tag.toString())">{{ tag.name }}
       </li>
     </ul>
 
@@ -15,11 +15,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Component} from 'vue-property-decorator';
+import store from '@/store/newIndex';
 
 @Component
 export default class Tags extends Vue {
-  @Prop() readonly dataSource: string[] | undefined;//不能直接赋值为[]
+  tagList = store.fetchTags();
   selectedTag: string[] = [];
 
   toggle(tag: string) {
@@ -29,16 +30,16 @@ export default class Tags extends Vue {
     } else {
       this.selectedTag.push(tag);
     }
-    this.$emit('update:value',this.selectedTag)
+    this.$emit('update:value', this.selectedTag);
   }
 
   create() {
     const name = window.prompt('请输入标签名');
-    if (name === '') {
-      window.alert('标签名不能为空');
-    } else if (this.dataSource) {
-      this.$emit('update:dataSource',
-          [...this.dataSource,name]);
+    if (!name) {
+      return window.alert('标签名不能为空');
+
+    } else if (this.tagList) {
+      store.createTag(name);
     }
   }
 }
@@ -51,7 +52,8 @@ export default class Tags extends Vue {
   padding: 16px;
   display: flex;
   flex-direction: column-reverse;
-background: white;
+  background: white;
+
   > .current {
     display: flex;
     flex-wrap: wrap;
