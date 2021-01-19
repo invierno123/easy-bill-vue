@@ -5,8 +5,8 @@
     </div>
     <ul class="current">
       <li v-for="tag in this.tagList" :key="tag.id"
-          :class="{selected:selectedTag.indexOf(tag.toString())>=0}"
-          @click="toggle(tag.toString())">{{ tag.name }}
+          :class="{selected:selectedTag.indexOf(tag)>=0}"
+          @click="toggle(tag)">{{ tag.name }}
       </li>
     </ul>
 

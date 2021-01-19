@@ -25,11 +25,16 @@ import store from '@/store/newIndex';
 
 
 @Component({
-  components: {Tags, EditItem, Types, NumberPad}
+  components: {Tags, EditItem, Types, NumberPad},
+  computed:{
+    reecordList(){
+      return store.recordList;
+    }
+  }
 })
 export default class Money extends Vue {
 
-  recordList = store.recordList;//需要在这里引用出recordList
+  // recordList = store.recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
 
