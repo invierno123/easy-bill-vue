@@ -8,7 +8,10 @@
                 placeholder="在这里输入备注"
                 @update:value="updateNotes"/>
     </div>
-
+        {{count}}
+    <button @click="$store.commit('increment',1)">
+       +1
+  </button>
     <Tags/>
   </Layout>
 </template>
@@ -20,15 +23,20 @@ import EditItem from '@/components/Money/EditItem.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import store from '@/store/newIndex';
+import oldStore from '@/store/newIndex';
+import store from '@/store';
 
 
 
 @Component({
   components: {Tags, EditItem, Types, NumberPad},
   computed:{
-    reecordList(){
-      return store.recordList;
+    // recordList(){
+    //   //return oldStore.recordList;
+    //   return store.state.count;
+    // }
+    count(){
+      return store.state.count;
     }
   }
 })
@@ -37,14 +45,14 @@ export default class Money extends Vue {
   // recordList = store.recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
-
+  
 
   updateNotes(value: string) {
     this.record.notes = value;
   }
 
   saveRecord() {
-    store.createRecord(this.record);
+    oldStore.createRecord(this.record);
   }
 
 
