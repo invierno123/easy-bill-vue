@@ -19,10 +19,10 @@ import {Component} from 'vue-property-decorator';
 
 @Component(
     {
-      computed:{
-       tagList(){
-         return []
-       }
+      computed: {
+        tagList() {
+          return this.$store.state.tagList;
+        }
       }
     }
 )
@@ -46,10 +46,15 @@ export default class Tags extends Vue {
       return window.alert('标签名不能为空');
 
     }
+    this.$store.commit('createTag', name);
     //？
     //else if (this.tagList) {
     //   store.createTag(name);
     // }
+  }
+
+  fetchTags() {
+    this.$store.commit('fetchTags');
   }
 }
 </script>
