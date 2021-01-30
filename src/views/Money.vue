@@ -23,25 +23,22 @@ import {Component} from 'vue-property-decorator';
 
 @Component({
   components: {Tags, EditItem, Types, NumberPad},
-  computed: {
-    recordList() {
-      //return oldStore.recordList;
-      return this.$store.state.recordList;
-    }
-
-  }
 })
 export default class Money extends Vue {
 
   // recordList = store.recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
+  get recordList() {
+    return this.$store.state.recordList;
+  }
 
   updateNotes(value: string) {
     this.record.notes = value;
   }
-  created(){
-    this.$store.commit('fetchRecords')
+
+  created() {
+    this.$store.commit('fetchRecords');
   }
 
   saveRecord() {

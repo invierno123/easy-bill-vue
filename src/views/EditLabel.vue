@@ -26,16 +26,11 @@ import EditItem from '@/components/Money/EditItem.vue';
 
 @Component({
   components: {EditItem},
-  computed:{
-    tag(){
-      return this.$store.state.currentTag
-    }
-  }
 })
 export default class EditLabel extends Vue {
-  //?
-  //tag= store.findTag(this.$route.params.id);
-tag?: Tag=undefined;
+ get tag(){
+   return this.$store.state.currentTag;
+ }
   created() {//注意这里的created函数并不是自定义的,是钩子函数
    const id= this.$route.params.id;
     this.$store.commit('setCurrentTag',id);

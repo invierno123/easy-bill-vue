@@ -22,6 +22,7 @@ const tagStore = {
     this.tagList.push({id: id, name: name});
     window.alert('添加成功');
     this.saveTags();
+    return 'success';
 
   },
   removeTag(id: string) {

@@ -19,17 +19,12 @@ import {Component} from 'vue-property-decorator';
 import {mixins} from 'vue-class-component';
 import TagHelper from '@/mixins/TagHelper';
 
-@Component(
-    {
-      computed: {
-        tagList() {
-          return this.$store.state.tagList;
-        }
-      }
-    }
-)
+@Component
 export default class Tags extends mixins(TagHelper) {
 
+  get tagList() {
+    return this.$store.state.tagList;
+  }
   selectedTag: string[] = [];
 
   toggle(tag: string) {
@@ -43,7 +38,7 @@ export default class Tags extends mixins(TagHelper) {
   }
 
 
-  fetchTags() {
+  created() {//created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
     this.$store.commit('fetchTags');
   }
 }
