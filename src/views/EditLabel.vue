@@ -8,7 +8,7 @@
     <div class="Edit-Wrapper">
       <EditItem :value="tag.name"
                 field-name="标签名"
-                @update:value="updateTag"
+                @update:value="update"
                 placeholder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
@@ -33,27 +33,25 @@ export default class EditLabel extends Vue {
  }
   created() {//注意这里的created函数并不是自定义的,是钩子函数
    const id= this.$route.params.id;
+    this.$store.commit('fetchTags');
     this.$store.commit('setCurrentTag',id);
+
     if(!this.tag){
       this.$router.replace('/404')
     }
   }
-  updateTag(name: string) {
+  update(name: string) {
     if (this.tag){
-      return
+     this.$store.commit('updateTag',  {
+       id: this.tag.id,name
+      })
     }
    //store.updateTag(this.tag.id, name);
   }
 
   remove() {
     if (this.tag) {
-      //?
-      // if (store.removeTag(this.tag.id)) {
-      //   this.$router.back();
-      // } else {
-      //   window.alert('删除失败');
-      // }
-      return
+     this.$store.commit('removeTag',this.tag.id)
 
     }
   }
