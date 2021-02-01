@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import NumberPad from '@/components/Money/NumberPad.vue';
-import Types from '@/components/Money/Types.vue';
 import EditItem from '@/components/Money/EditItem.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
@@ -25,7 +24,7 @@ import Tabs from '@/components/Tabs.vue';
 
 
 @Component({
-  components: {Tabs, Tags, EditItem, Types, NumberPad},
+  components: {Tabs, Tags, EditItem, NumberPad},
 })
 export default class Money extends Vue {
 
