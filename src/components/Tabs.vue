@@ -21,7 +21,7 @@ export default class Types extends Vue {
   @Prop(String) readonly value!: string;
   @Prop(String) classPrefix?: string;
 
-liClass(item){
+liClass(item: DataSourceItem){
   return {selected: item.value===this.value,
     [this.classPrefix+'-tabs-item']: this.classPrefix}
 }

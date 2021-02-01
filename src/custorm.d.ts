@@ -1,9 +1,15 @@
+type RootState = {
+  recordList: RecordItem[];
+  tagList: Tag[];
+  currentTag?: Tag;
+}
+
 type RecordItem = {
   tags: string[];
   types: string;
   notes: string;
   amount: number;
-  createdTime?: Date;//类/构造函数,?表示created可以不存在
+  createdTime?: string;//类/构造函数,?表示created可以不存在
 
 }
 
