@@ -2,11 +2,14 @@
 <Layout>
 
   <Tabs class-prefix="type" :data-source=" recordTypeList" :value.sync="typeName"/>
-  <Tabs class-prefix="interval" :data-source="tabList " :value.sync="tabName"/>
+  <Tabs class-prefix="tabList" :data-source="tabList " :value.sync="tabName"/>
 </Layout>
 
 </template>
 <style scoped lang="scss">
+::v-deep .tabList-tabs-item{
+  height: 48px;
+}
 ::v-deep  .type-tabs-item{
 background: white ;
   &.selected{
