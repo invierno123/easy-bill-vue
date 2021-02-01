@@ -6,7 +6,7 @@
       <span class="rightIcon"/>
     </div>
     <div class="Edit-Wrapper">
-      <EditItem :value="tag.name"
+      <EditItem :value="currentTag.name"
                 field-name="标签名"
                 @update:value="update"
                 placeholder="请输入标签名"/>
@@ -28,7 +28,7 @@ import EditItem from '@/components/Money/EditItem.vue';
   components: {EditItem},
 })
 export default class EditLabel extends Vue {
- get tag(){
+ get currentTag(){
    return this.$store.state.currentTag;
  }
   created() {//注意这里的created函数并不是自定义的,是钩子函数
@@ -36,22 +36,22 @@ export default class EditLabel extends Vue {
     this.$store.commit('fetchTags');
     this.$store.commit('setCurrentTag',id);
 
-    if(!this.tag){
+    if(!this.currentTag){
       this.$router.replace('/404')
     }
   }
   update(name: string) {
-    if (this.tag){
+    if (this.currentTag){
      this.$store.commit('updateTag',  {
-       id: this.tag.id,name
+       id: this.currentTag.id,name
       })
     }
    //store.updateTag(this.tag.id, name);
   }
 
   remove() {
-    if (this.tag) {
-     this.$store.commit('removeTag',this.tag.id)
+    if (this.currentTag) {
+     this.$store.commit('removeTag',this.currentTag.id)
 
     }
   }
