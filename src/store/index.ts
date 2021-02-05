@@ -9,7 +9,8 @@ const store = new Vuex.Store({
   state: {//data
     recordList: [],
     tagList: [],
-    currentTag: undefined
+    currentTag: undefined,
+    createRecordError: null
   } as RootState,
   mutations: {//methods
     fetchRecords(state) {
@@ -52,8 +53,8 @@ const store = new Vuex.Store({
 
     },
 
-    createRecord(state, record) {
-      const newRecord: RecordItem = clone(record); //深拷贝,先变成字符串再重新创造一个对象
+    createRecord(state, record: RecordItem) {
+      const newRecord = clone(record); //深拷贝,先变成字符串再重新创造一个对象
       newRecord.createdTime = new Date().toISOString();
       state.recordList.push(newRecord);
       //recordStore.saveRecords();
@@ -67,6 +68,12 @@ const store = new Vuex.Store({
 
       state.tagList = JSON.parse(window.localStorage
         .getItem('tagList') || '[]');
+      if (!state.tagList || state.tagList.length===0){
+        store.commit('createTag','衣');
+        store.commit('createTag','食');
+        store.commit('createTag','住');
+        store.commit('createTag','行');
+      }
     },
     createTag(state, name: string) {
       const names = state.tagList.map(item => item.name);
@@ -77,7 +84,7 @@ const store = new Vuex.Store({
       const id = createId().toString();
       state.tagList.push({id: id, name: name});
       store.commit('saveTags');
-      window.alert('添加成功');
+
       //.saveTags();
 
     },

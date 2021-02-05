@@ -9,7 +9,7 @@
                 placeholder="在这里输入备注"
                 @update:value="updateNotes"/>
     </div>
-    <Tags/>
+    <Tags @update:value="record.tags=$event"/>
   </Layout>
 </template>
 
@@ -28,7 +28,7 @@ import Tabs from '@/components/Tabs.vue';
 })
 export default class Money extends Vue {
 
-  recordTypeList=recordTypeList;
+  recordTypeList = recordTypeList;
   // recordList = store.recordList;//需要在这里引用出recordList
   record: RecordItem = {tags: [], notes: '', types: '-', amount: 0};
 
@@ -46,15 +46,17 @@ export default class Money extends Vue {
 
   saveRecord() {
     this.$store.commit('createRecord', this.record);
+    if (this.$store.state.createRecordError === null) {
+      window.alert('已添加');
+    }
   }
 
 
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .layout-content {
-  border: 1px solid red;
   display: flex;
   flex-direction: column-reverse;
 }

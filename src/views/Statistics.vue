@@ -8,7 +8,7 @@
       <li v-for="(group,index) in groupedList"
           :key="index">
         <h3 class="title">{{ beautify(group.title) }}
-        <span>{{group.total}}</span></h3>
+        <span>￥{{group.total}}</span></h3>
         <ol>
           <li v-for="item in group.items"
               class="record"
@@ -93,12 +93,13 @@ export default class Statistics extends Vue {
 
   get groupedList() {
     const {recordList} = this;
-    if (recordList.length === 0) {
-      return [];
-    }
+
     const newList = clone(recordList)
         .filter(r => r.types === this.typeName)
         .sort((a, b) => dayjs(b.createdTime).valueOf() - dayjs(a.createdTime).valueOf());
+    if (newList.length === 0) {
+      return [];
+    }
     type Result = { title: string; total?: number; items: RecordItem[] }[]
     const result: Result = [{title: dayjs(newList[0].createdTime).format('YYYY-MM-DD'), items: [newList[0]]}];
     for (let i = 0; i < newList.length; i++) {
