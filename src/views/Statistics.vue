@@ -3,8 +3,7 @@
 
     <Tabs class-prefix="type" :data-source=" recordTypeList" :value.sync="typeName"/>
 
-
-    <ol>
+    <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList"
           :key="index">
         <h3 class="title">{{ beautify(group.title) }}
@@ -20,7 +19,9 @@
         </ol>
       </li>
     </ol>
-
+<div v-else class="no-result">
+  目前没有相关记录
+</div>
 
   </Layout>
 
@@ -49,6 +50,10 @@
   @extend %item;
   background: white;
 }
+.no-result{
+  padding: 16px;
+  text-align: center;
+}
 </style>
 
 <script lang="ts">
@@ -68,7 +73,7 @@ import clone from '@/lib/clone';
 export default class Statistics extends Vue {
 
   tagString(tag: Tag[]) {
-    return tag.length === 0 ? '无' : tag.join(',');
+    return tag.length === 0 ? '无' : tag.map(t=>t.name).join(',');
   }
 
   beautify(string: string) {
@@ -102,7 +107,7 @@ export default class Statistics extends Vue {
     }
     type Result = { title: string; total?: number; items: RecordItem[] }[]
     const result: Result = [{title: dayjs(newList[0].createdTime).format('YYYY-MM-DD'), items: [newList[0]]}];
-    for (let i = 0; i < newList.length; i++) {
+    for (let i = 1; i < newList.length; i++) {
       const current = newList[i];
       const last = result[result.length - 1];
       if (dayjs(last.title).isSame(dayjs(current.createdTime), 'day')) {
