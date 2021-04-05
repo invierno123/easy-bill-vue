@@ -17,7 +17,7 @@ const recordStore = {
 
   createRecord(record: RecordItem){
     const newRecord: RecordItem = clone(record); //深拷贝,先变成字符串再重新创造一个对象
-    newRecord.createdTime = new Date().toISOString();
+    newRecord.createdTime =  newRecord.createdTime||new Date().toISOString();
     this.recordList?.push(newRecord);
     recordStore.saveRecords();
   },
