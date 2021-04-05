@@ -56,7 +56,7 @@ const store = new Vuex.Store({
 
     createRecord(state, record: RecordItem) {
       const newRecord = clone(record); //深拷贝,先变成字符串再重新创造一个对象
-      newRecord.createdTime = new Date().toISOString();
+      newRecord.createdTime = record.createdTime|| new Date().toISOString();
       state.recordList.push(newRecord);
       //recordStore.saveRecords();
       store.commit('saveRecords');
