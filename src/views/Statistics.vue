@@ -2,12 +2,12 @@
   <Layout>
 
     <Tabs class-prefix="type" :data-source=" recordTypeList" :value.sync="typeName"/>
-
+    <ECharts :option="x" class="echarts"/>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList"
           :key="index">
         <h3 class="title">{{ beautify(group.title) }}
-        <span>￥{{group.total}}</span></h3>
+          <span>￥{{ group.total }}</span></h3>
         <ol>
           <li v-for="item in group.items"
               class="record"
@@ -19,15 +19,20 @@
         </ol>
       </li>
     </ol>
-<div v-else class="no-result">
-  目前没有相关记录
-</div>
+    <div v-else class="no-result">
+      目前没有相关记录
+    </div>
 
   </Layout>
 
 </template>
 
 <style scoped lang="scss">
+.echarts{
+  max-width: 100%;
+  height: 400px;
+}
+
 %item {
   padding: 8px 16px;
   line-height: 24px;
@@ -50,7 +55,8 @@
   @extend %item;
   background: white;
 }
-.no-result{
+
+.no-result {
   padding: 16px;
   text-align: center;
 }
@@ -61,19 +67,46 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
-
+import { use } from "echarts/core";
 import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 
 
+import { CanvasRenderer } from "echarts/renderers";
+import { PieChart,BarChart,LineChart} from "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+} from "echarts/components";
+import ECharts,{ THEME_KEY } from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  BarChart,
+  GridComponent,
+   LineChart
+]);
+
+
+
 @Component({
-  components: {Tabs},
+  components: {Tabs, ECharts},
 })
+
 export default class Statistics extends Vue {
+  provide: {
+    [THEME_KEY]: 'dark';
+  } | undefined;
 
   tagString(tag: Tag[]) {
-    return tag.length === 0 ? '无' : tag.map(t=>t.name).join(',');
+    return tag.length === 0 ? '无' : tag.map(t => t.name).join(',');
   }
 
   beautify(string: string) {
@@ -94,6 +127,36 @@ export default class Statistics extends Vue {
 
   get recordList() {
     return (this.$store.state as RootState).recordList;
+  }
+
+  get x() {
+    return {
+      tooltip: {
+        triggerOn: "click",
+        show:true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+          'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+          'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+          'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+          'Mon', 'Tue'
+        ]
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: [120, 200, 150, 80, 70, 110, 130,
+          120, 200, 150, 80, 70, 110, 130,
+          120, 200, 150, 80, 70, 110, 130,
+          120, 200, 150, 80, 70, 110, 130,
+          120, 200
+        ],
+        type: 'line'
+      }]
+    };
   }
 
   get groupedList() {
