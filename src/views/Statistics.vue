@@ -2,7 +2,7 @@
   <Layout>
 
     <Tabs class-prefix="type" :data-source=" recordTypeList" :value.sync="typeName"/>
-    <ECharts :option="x" class="echarts"/>
+    <Chart :options="x" class="echarts"/>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList"
           :key="index">
@@ -67,43 +67,23 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
-import { use } from "echarts/core";
+
 import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
+import Chart from '@/components/Chart.vue'
 
 
-import { CanvasRenderer } from "echarts/renderers";
-import { PieChart,BarChart,LineChart} from "echarts/charts";
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  GridComponent,
-} from "echarts/components";
-import ECharts,{ THEME_KEY } from "vue-echarts";
 
-use([
-  CanvasRenderer,
-  PieChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  BarChart,
-  GridComponent,
-   LineChart
-]);
 
 
 
 @Component({
-  components: {Tabs, ECharts},
+  components: {Tabs, Chart},
 })
 
 export default class Statistics extends Vue {
-  provide: {
-    [THEME_KEY]: 'dark';
-  } | undefined;
+
 
   tagString(tag: Tag[]) {
     return tag.length === 0 ? '无' : tag.map(t => t.name).join(',');
@@ -137,11 +117,10 @@ export default class Statistics extends Vue {
       },
       xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-          'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-          'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-          'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-          'Mon', 'Tue'
+        data: ['1', '2', '3', '4', '5', '6', '7',
+          '8', '9', '10', '11', '12', '13', '14', '15', '16', '17',
+          '18', '19', '20','21', '22', '23', '24', '25', '26', '27',
+          '28', '29', '30'
         ]
       },
       yAxis: {
@@ -149,9 +128,9 @@ export default class Statistics extends Vue {
       },
       series: [{
         data: [120, 200, 150, 80, 70, 110, 130,
+          120, 200, 150, 80, 1170, 110, 130,
           120, 200, 150, 80, 70, 110, 130,
-          120, 200, 150, 80, 70, 110, 130,
-          120, 200, 150, 80, 70, 110, 130,
+          120, 1200, 150, 80, 270, 110, 130,
           120, 200
         ],
         type: 'line'
