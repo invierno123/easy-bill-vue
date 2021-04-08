@@ -2,7 +2,9 @@
   <Layout>
 
     <Tabs class-prefix="type" :data-source=" recordTypeList" :value.sync="typeName"/>
-    <Chart :options="x" class="echarts"/>
+   <div class="chart-wrapper" ref="chartWrapper">
+    <Chart :options="x" class="chart"/>
+   </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList"
           :key="index">
@@ -27,40 +29,6 @@
 
 </template>
 
-<style scoped lang="scss">
-.echarts{
-  max-width: 100%;
-  height: 400px;
-}
-
-%item {
-  padding: 8px 16px;
-  line-height: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-}
-
-.note {
-  margin-right: auto;
-  margin-left: 8px;
-  color: #999;
-}
-
-.title {
-  @extend %item;
-}
-
-.record {
-  @extend %item;
-  background: white;
-}
-
-.no-result {
-  padding: 16px;
-  text-align: center;
-}
-</style>
 
 <script lang="ts">
 
@@ -84,6 +52,9 @@ import Chart from '@/components/Chart.vue'
 
 export default class Statistics extends Vue {
 
+  mounted(){
+    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft=9999;
+  }
 
   tagString(tag: Tag[]) {
     return tag.length === 0 ? '无' : tag.map(t => t.name).join(',');
@@ -111,9 +82,15 @@ export default class Statistics extends Vue {
 
   get x() {
     return {
+      grid:{
+        left:0,
+        right:0
+      },
       tooltip: {
         triggerOn: "click",
-        show:true
+        show:true,
+        position:'top',
+        formatter:'{c}'
       },
       xAxis: {
         type: 'category',
@@ -121,19 +98,30 @@ export default class Statistics extends Vue {
           '8', '9', '10', '11', '12', '13', '14', '15', '16', '17',
           '18', '19', '20','21', '22', '23', '24', '25', '26', '27',
           '28', '29', '30'
-        ]
+        ],
+        axisTick:{
+          alignWithLabel:true
+        },
+
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        show:false
       },
       series: [{
+        symbol:'circle',
+        symbolSize:12,
+        itemStyle:{
+          color: '#666'
+        },
         data: [120, 200, 150, 80, 70, 110, 130,
           120, 200, 150, 80, 1170, 110, 130,
           120, 200, 150, 80, 70, 110, 130,
           120, 1200, 150, 80, 270, 110, 130,
           120, 200
         ],
-        type: 'line'
+        type: 'line',
+
       }]
     };
   }
@@ -175,6 +163,47 @@ export default class Statistics extends Vue {
 </script>
 
 <style scoped lang="scss">
+
+.chart{
+
+  height: 400px;
+  width: 420%;
+  &-wrapper{
+    overflow: auto;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+  }
+}
+
+%item {
+  padding: 8px 16px;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.note {
+  margin-right: auto;
+  margin-left: 8px;
+  color: #999;
+}
+
+.title {
+  @extend %item;
+}
+
+.record {
+  @extend %item;
+  background: white;
+}
+
+.no-result {
+  padding: 16px;
+  text-align: center;
+}
+
 ::v-deep {
   .tabList-tabs-item {
     height: 48px;
