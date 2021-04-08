@@ -77,13 +77,14 @@ export default class Statistics extends Vue {
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
-  get getArray(){
+
+  get getArray() {
     const today = new Date();
     const array = [];
     for (let i = 0; i <= 29; i++) {
       const date = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
-      const found = _.find(this.recordList, {createdTime: date});
-      array.push({date, value: found ? found.amount : 0});
+      const found = _.find(this.groupedList, {title: date});
+      array.push({date, value: found ? found.total : 0});
     }
     array.sort((a, b) => {
       if (a.date > b.date) {
@@ -94,7 +95,7 @@ export default class Statistics extends Vue {
         return -1;
       }
     });
-    return array
+    return array;
   }
 
   get getChart() {
@@ -118,7 +119,9 @@ export default class Statistics extends Vue {
         axisTick: {
           alignWithLabel: true
         },
+        axisLabel: {
 
+        }
       },
       yAxis: {
         type: 'value',
