@@ -2,9 +2,9 @@
   <Layout>
 
     <Tabs class-prefix="type" :data-source=" recordTypeList" :value.sync="typeName"/>
-   <div class="chart-wrapper" ref="chartWrapper">
-    <Chart :options="x" class="chart"/>
-   </div>
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart :options="getChart" class="chart"/>
+    </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList"
           :key="index">
@@ -39,11 +39,8 @@ import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
-import Chart from '@/components/Chart.vue'
-
-
-
-
+import Chart from '@/components/Chart.vue';
+import _ from 'lodash';
 
 
 @Component({
@@ -52,8 +49,9 @@ import Chart from '@/components/Chart.vue'
 
 export default class Statistics extends Vue {
 
-  mounted(){
-    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft=9999;
+  mounted() {
+    const div = (this.$refs.chartWrapper as HTMLDivElement);
+    div.scrollLeft = div.scrollWidth;
   }
 
   tagString(tag: Tag[]) {
@@ -79,47 +77,60 @@ export default class Statistics extends Vue {
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
+  get getArray(){
+    const today = new Date();
+    const array = [];
+    for (let i = 0; i <= 29; i++) {
+      const date = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+      const found = _.find(this.recordList, {createdTime: date});
+      array.push({date, value: found ? found.amount : 0});
+    }
+    array.sort((a, b) => {
+      if (a.date > b.date) {
+        return 1;
+      } else if (a.date === b.date) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+    return array
+  }
 
-  get x() {
+  get getChart() {
+
+    const xData = this.getArray.map(item => item.date);
+    const yData = this.getArray.map(item => item.value);
     return {
-      grid:{
-        left:0,
-        right:0
+      grid: {
+        left: 0,
+        right: 0
       },
       tooltip: {
-        triggerOn: "click",
-        show:true,
-        position:'top',
-        formatter:'{c}'
+        triggerOn: 'click',
+        show: true,
+        position: 'top',
+        formatter: '{c}'
       },
       xAxis: {
         type: 'category',
-        data: ['1', '2', '3', '4', '5', '6', '7',
-          '8', '9', '10', '11', '12', '13', '14', '15', '16', '17',
-          '18', '19', '20','21', '22', '23', '24', '25', '26', '27',
-          '28', '29', '30'
-        ],
-        axisTick:{
-          alignWithLabel:true
+        data: xData,
+        axisTick: {
+          alignWithLabel: true
         },
 
       },
       yAxis: {
         type: 'value',
-        show:false
+        show: false
       },
       series: [{
-        symbol:'circle',
-        symbolSize:12,
-        itemStyle:{
+        symbol: 'circle',
+        symbolSize: 12,
+        itemStyle: {
           color: '#666'
         },
-        data: [120, 200, 150, 80, 70, 110, 130,
-          120, 200, 150, 80, 1170, 110, 130,
-          120, 200, 150, 80, 70, 110, 130,
-          120, 1200, 150, 80, 270, 110, 130,
-          120, 200
-        ],
+        data: yData,
         type: 'line',
 
       }]
@@ -164,13 +175,15 @@ export default class Statistics extends Vue {
 
 <style scoped lang="scss">
 
-.chart{
+.chart {
 
   height: 400px;
   width: 420%;
-  &-wrapper{
+
+  &-wrapper {
     overflow: auto;
-    &::-webkit-scrollbar{
+
+    &::-webkit-scrollbar {
       display: none;
     }
   }
