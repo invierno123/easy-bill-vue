@@ -10,6 +10,7 @@
                 placeholder="在这里输入日期"
                 :value.sync="record.createdTime"/>
     </div>
+    <hr/>
     <div class="notes">
       <EditItem field-name="备注"
                 placeholder="在这里输入备注"
@@ -24,19 +25,26 @@ import NumberPad from '@/components/Money/NumberPad.vue';
 import EditItem from '@/components/Money/EditItem.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Inject} from 'vue-property-decorator';
 import recordTypeList from '@/constants/recordTypeList';
 import Tabs from '@/components/Tabs.vue';
 
 
+import {Message} from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.component(Message.name, Message);
 @Component({
   components: {Tabs, Tags, EditItem, NumberPad},
 })
 export default class Money extends Vue {
 
+  @Inject('reload') readonly reload!: Function;
+
+
   recordTypeList = recordTypeList;
   // recordList = store.recordList;//需要在这里引用出recordList
-  record: RecordItem = {tags: [], notes: '', types: '-', amount: 0,createdTime:new Date().toISOString()};
+  record: RecordItem = {tags: [], notes: '', types: '-', amount: 0, createdTime: new Date().toISOString()};
 
   get recordList() {
     return this.$store.state.recordList;
@@ -50,15 +58,21 @@ export default class Money extends Vue {
     this.$store.commit('fetchRecords');
   }
 
+
+
   saveRecord() {
     if (!this.record.tags || this.record.tags.length === 0) {
-      return window.alert('请至少选择一个标签');
+      return Message.warning('请至少选择一个标签');
+
+    }else{
+      this.$store.commit('createRecord', this.record);
+      this.reload()
+      if (this.$store.state.createRecordError === null) {
+        Message.success('已添加');
+        this.record.notes = '';
+      }
     }
-    this.$store.commit('createRecord', this.record);
-    if (this.$store.state.createRecordError === null) {
-      window.alert('已添加');
-      this.record.notes = '';
-    }
+
   }
 
 
@@ -72,7 +86,7 @@ export default class Money extends Vue {
 }
 
 .notes {
-  padding: 12px 0;
+  padding: 8px 0;
 }
 </style>
 <style lang="scss" scoped>

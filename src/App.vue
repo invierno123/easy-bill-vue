@@ -1,15 +1,38 @@
 <template>
   <div id="app">
-    <router-view/>
-
+    <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
+<script lang="ts">
+import {Vue, Component, Provide} from 'vue-property-decorator'
 
+@Component({
+
+  name: 'App',
+
+})
+
+export default class extends Vue {
+  private isRouterAlive = true
+  @Provide('reload')
+  reload () {
+
+    this.isRouterAlive = false
+
+    this.$nextTick(() => {
+
+      this.isRouterAlive = true
+
+    })
+
+  }
+}
+</script>
 <style lang="scss">
-@import "~@/assets/style/helper.scss";
-@import "~@/assets/style/reset.scss";
+@import "src/assets/style/helper.scss";
+@import "src/assets/style/reset.scss";
 
-body{
+body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #333;
@@ -19,7 +42,7 @@ body{
   background: #f5f5f5;
 }
 
-#app{
+#app {
   max-width: 500px;
   margin: 0 auto;
 }
